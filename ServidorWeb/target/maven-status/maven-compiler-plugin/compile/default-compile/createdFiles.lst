@@ -1,6 +1,10 @@
-servlets\SvVerificarNickUsuario.class
 servlets\SvConsultaUsuario.class
 servlets\SvLogout.class
 servlets\SvRegistroUsuario.class
-rutaP\rutaProyecto.class
+servlets\SvAltaAlbum.class
 servlets\SvLogin.class
+servlets\SvVerificarNickUsuario.class
+servlets\SvAgregarTemaAlbum.class
+servlets\SvGetAlbumBy.class
+rutaP\rutaProyecto.class
+servlets\SvAgregarGeneroAlbum.class

@@ -83,6 +83,7 @@ public interface iSistema {
     public abstract HashSet<String> getGeneros();  
     public abstract Album getAlbumEspecificoArt(String nombreA, String nombreArtista);
     public abstract Album getAlbumEspecificoGen(String nombreA, String nombreGenero);
+    public abstract List<DataAlbum> getAllAlbums();
     
     //genero - lista fran
     //Genero

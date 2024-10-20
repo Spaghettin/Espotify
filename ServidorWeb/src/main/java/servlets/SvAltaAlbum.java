@@ -1,84 +1,131 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+
 package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import controladores.iSistema;
+import controladores.Fabrica;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.HashSet;
+import rutaP.rutaProyecto;
 
-/**
- *
- * @author miche
- */
+
+
+
 @WebServlet(name = "SvAltaAlbum", urlPatterns = {"/SvAltaAlbum"})
+@MultipartConfig
 public class SvAltaAlbum extends HttpServlet {
+iSistema sys = new Fabrica().getSistema();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SvAltaAlbum</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SvAltaAlbum at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
     }
+    
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+    
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+  @Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    processRequest(request, response);
+    
+    HttpSession session = request.getSession();
+    String genero = request.getParameter("nombreG");
+    String album = request.getParameter("nombreA");
+    String nickname = session.getAttribute("nickname").toString();
+    String anioStr = request.getParameter("anio");
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    // Manejo de errores para la obtención del año
+    
+        if ("".equals(anioStr)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "La posicion es requerida.");
+            return; 
+        }
+        
+    String action = request.getParameter("action");
+    // Verificación del nombre del álbum
+    if ("checkAlbumName".equals(action)) {
+        String value = request.getParameter("value");
+        try {
+            boolean exists = sys.verificaAlbum(value, nickname);
+            response.getWriter().write(exists ? "exists" : "available");
+            response.setStatus(HttpServletResponse.SC_OK);
+        } catch (Exception ex) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error en el servidor.");
+        }
+        return;
+    }
+    Integer anio = Integer.valueOf(anioStr); 
+
+
+    // Carga de la imagen
+    String uploadPath = null;
+    String filePath = null;
+    String rutaimg = null;
+    Part filePart = request.getPart("imagen");
+
+    if (filePart != null && filePart.getSize() > 0) {
+        uploadPath = rutaProyecto.getRuta() + "imagenes_album";   
+
+        String contentType = filePart.getContentType();
+        String[] contentParts = contentType.split("/");
+        String imageFormat = contentParts[1];
+        String fileName = album + "." + imageFormat;
+        filePath = uploadPath + File.separator + fileName;
+
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        rutaimg = "imagenes_albumes/" + fileName;
+
+        try (InputStream input = filePart.getInputStream()) {
+            Files.copy(input, new File(filePath).toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al guardar la imagen.");
+            return;
+        }
+    } else {
+        System.out.println("No se ha subido ninguna imagen o el archivo está vacío");
+    }
+    
+    // ALTA ALBUM
+    try {
+        boolean exist = sys.verificaAlbum(album, nickname);
+        if (!exist) {
+            sys.cargarDatosAlbum(album, nickname, anio, rutaimg);
+            sys.altaAlbum();
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "El álbum ya existe.");
+        }
+    } catch (Exception e) {
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al crear el álbum.");
+    }
+    
+    session.removeAttribute("temas");
+    session.removeAttribute("temasPos");
+    session.removeAttribute("generos");
+}
+    
+
     @Override
     public String getServletInfo() {
         return "Short description";

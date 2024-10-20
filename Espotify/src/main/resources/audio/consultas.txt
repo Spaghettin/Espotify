@@ -1,0 +1,51 @@
+1) select docCli, nomCli, dirCli 
+   from cliente join barrio 
+   where codBar = codBarCli and nomBar = "Artigas" and (depBar = "Salto"
+   or depBar = "Maldonado") and paisBar = "Uruguay" group by nomCli;
+
+2) select nomBar,count(nomBar) as NumeroDeBarrios 
+   from barrio where paisBar = "Uruguay" group by nomBar;
+
+3) select * from propiedad
+   where precioMesProp > 7000 and precioMesProp < 14000;
+
+4) select c.docCli, c.nomCli, c.dirCli 
+   from cliente as c join barrio as b 
+   where b.codBar = c.codBarCli and nomBar = "Artigas" 
+   and depBar = "Salto" and paisBar = "Uruguay";
+
+5) select arrendamiento.* from arrendamiento join barrio 
+   where codPropArren = codBar and fdesdeArren  = NULL 
+   and nomBar = "Artigas" and ciuBar = "Salto" and paisBar = "Uruguay";
+
+
+6) select P1.nomProp, P2.nomProp from Propiedad as P1, Propiedad as P2
+   where (P1.precioMesProp < 10000) and (P1.nomProp < P2.nomProp);
+
+7) select nomProp, dirProp from propiedad join barrio 
+   where codBar = codBarProp and ciuBar = "Aigua" and depBar = "Maldonado" 
+   and paisBar = "Uruguay" and precioMesProp = (select MIN(precioMesProp) from propiedad);
+
+8) create view Cli 
+   as (select * from cliente as c join barrio as b where c.codBarCli = b.codBar and b.depBar = "Montevideo" and b.paisBar = "Uruguay");
+   create view CiuArren 
+   as (select b.ciuBar from barrio as b,arrendamiento as a where a.fdesdeArren is not NULL);
+
+   select * from Cli where not exists 
+   (select ciuBar from CiuArren group by ciuBar having count(ciuBar) > (select count(distinct ciuBar) from barrio where paisBar = "Uruguay"));
+
+9) select precioMesArren, SUM(precioMesArren) as Total from Arrendamiento 
+   where DATEDIFF(fhastaArren, CURDATE()) >= 0 or fhastaArren is NULL;
+
+10) select codPropArren, count(codPropArren) as CantidadDeVecesArrendado from Arrendamiento 
+    group by codPropArren having count(codPropArren) > 3;
+
+11) update propiedad set precioMesProp = (precioMesProp*1.1);
+    update arrendamiento set precioMesArren = (precioMesArren*1.1) 
+    where DATEDIFF(fhastaArren, CURDATE()) >= 0 or fhastaArren is NULL;
+
+12) insert into Arrendamiento values (1, "1.111.111-1", '2024-01-01',NULL, 16500);
+
+13) select codPropArren, nomProp, dirProp from Propiedad, Arrendamiento 
+    where fdesdeArren is not NULL group by precioMesProp desc;
+

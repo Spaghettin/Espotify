@@ -112,7 +112,6 @@ public class SvLogin extends HttpServlet {
                 
                 
             } else {
-                System.out.println("Contraseña incorrecta");
                 
             }
             

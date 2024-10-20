@@ -474,6 +474,10 @@ public class Sistema implements iSistema{
         return false;
     }
     
+    public List<DataAlbum> getAllAlbums(){
+        return cpu.getAllAlbumes();
+    }
+    
 //    public void desvinculaAlbum(String nombreA, String nombreArtista){
 //        Artista ar = (Artista) Usuario.obtenerUsuario(nombreArtista);
 //        ar.getAlbumesMap().remove(nombreA);
@@ -498,8 +502,8 @@ public class Sistema implements iSistema{
             for (Genero gen : genList){
                 if (gen.getNombre().equals(nombreGenero)){
                     if (!albumGenerico.getGeneros().contains(gen)) {
-                    albumGenerico.addGenero(genAgregar);
-                    //addAlbumGenero(genAgregar.getNombre(),albumGenerico);
+                        albumGenerico.addGenero(genAgregar);
+                        //addAlbumGenero(genAgregar.getNombre(),albumGenerico);
 
                     }
                     //cpu.actualizarAlbum(albumGenerico);

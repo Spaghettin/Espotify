@@ -31,7 +31,7 @@
                     <% if (isLoggedIn) { %>
                         <% if (isArtista) { %>
                             <li class="nav-item">
-                                <a class="nav-link" href="${pageContext.request.contextPath}/crear-album.jsp">Crear Álbum</a>
+                                <a class="nav-link" id="btnCrearAlbum" href="${pageContext.request.contextPath}/altaAlbum.jsp">Crear Álbum</a>
                             </li>
                         <% } else { %>
                             <li class="nav-item">
@@ -82,8 +82,16 @@
             </div>
         </div>
     </nav>
+<script>
+
+</script>
 </header>
 <style>
+    
+    .navbar navbar-expand-lg custom-navbar{
+        position: sticky;
+        
+    }
     .custom-navbar {
         background: linear-gradient(to right, #d3d3d3, #f0f0f0);
     }

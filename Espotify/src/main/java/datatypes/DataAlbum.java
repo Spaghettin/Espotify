@@ -9,30 +9,41 @@ public class DataAlbum {
     private String nombre;
     private Integer fechaCreacion;
     private String ImagenAlbum;
-    private  Collection<DataTema> Temas;
-    private  Collection<String> Generos;
+    private String nombreArt;
+    private Collection<DataTema> Temas;
+    private Collection<String> Generos;
 
-    public DataAlbum(String nombre, Integer fechaCreacion, String imagen, Collection<DataTema> temas, Collection<String> generos) {
+    public DataAlbum(String nombre, Integer fechaCreacion, String imagen, Collection<DataTema> temas, Collection<String> generos, String nombreArt) {
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
         this.ImagenAlbum = imagen;
         this.Temas = temas;
         this.Generos = generos;
+        this.nombreArt = nombreArt;
     }
     
-    public DataAlbum(Long id ,String nombre, Integer fechaCreacion, String imagen, Collection<DataTema> temas, Collection<String> generos) {
-        this.id=id;
+    public DataAlbum(Long id ,String nombre, Integer fechaCreacion, String imagen, Collection<DataTema> temas, Collection<String> generos, String nombreArt) {
+        this.id = id;
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
         this.ImagenAlbum = imagen;
         this.Temas = temas;
         this.Generos = generos;
+        this.nombreArt = nombreArt;
     }
     
     public DataAlbum(){}
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNombreArt() {
+        return nombreArt;
+    }
+
+    public void setNombreArt(String nombreArt) {
+        this.nombreArt = nombreArt;
     }
 
     public void setNombre(String nombre) {

@@ -73,11 +73,6 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         jTable_temAG.setModel(tableModel);
         jTable_temAG.setVisible(false);
         
-        
-        sys.altaGenero("Rock");
-        sys.altaGenero("Rock Ligero");
-        sys.altaGenero("Rock Pesado");
-        sys.altaGenero("Pop");
         sys.cargarGenerosSys();
         jTree_generos = new JTree(treeModel);
         Load();

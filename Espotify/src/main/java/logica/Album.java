@@ -197,7 +197,7 @@ public class Album implements Serializable {
             generos.add(entry.getNombre());
         }
        
-        DataAlbum dt_alb = new DataAlbum(getId(), getNombre(), getFechaCreacion(), getImagenAlbum(), temas, generos);
+        DataAlbum dt_alb = new DataAlbum(getId(), getNombre(), getFechaCreacion(), getImagenAlbum(), temas, generos, artista.getNickname());
     return dt_alb;
     }
  
@@ -212,7 +212,7 @@ public class Album implements Serializable {
         generos.add(genero.getNombre());
     }
 
-    return new DataAlbum(getNombre(), getFechaCreacion(), getImagenAlbum(), dataTemas, generos);
+    return new DataAlbum(getNombre(), getFechaCreacion(), getImagenAlbum(), dataTemas, generos, artista.getNickname());
     }
     
 }

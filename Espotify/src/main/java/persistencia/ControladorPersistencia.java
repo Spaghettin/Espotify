@@ -4,6 +4,7 @@
  */
 package persistencia;
 
+import datatypes.DataAlbum;
 import datatypes.DataUsuario;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -188,6 +189,15 @@ public void crearAlbum(Album album) {
         Genero gen = obtenerGenero(nombreGenero);
         Album album = generoController.getAlbum(nombreA, gen);
         return album;
+    }
+    
+    public List<DataAlbum> getAllAlbumes(){
+        List<Album> albumes = albumController.findAllAlbumes();
+        List<DataAlbum> dtAlbumes = new ArrayList<>();
+        for (Album alb : albumes){
+            dtAlbumes.add(alb.getDataAlbum());
+        }
+        return dtAlbumes;
     }
     
     public void detachAlbum(Album album){
