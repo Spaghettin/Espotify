@@ -1275,6 +1275,137 @@ public class Sistema implements iSistema{
 
       }
        
+    public List<DataTema> getDataTemasAjax(String s) {
+        List<Tema> lTema = cpu.getTemasAjax(s);
+        List<DataTema> dtTemas = new ArrayList<>();
+        for (Tema tema : lTema) {
+            DataTema dtTema = tema.getDataTemaI();;
+            dtTemas.add(dtTema);
+            System.out.println("Tema: " + dtTema.getNombre());
+        }
+        return dtTemas;
+    }
+       
+    public List<DataLista> getDataListasReproduccionAjax(String s, String tipo) {
+        List<ListaReproduccion> lRP = cpu.getListasAjax(s);
+        List<DataLista> DTListasP = new ArrayList<>();
+        List<DataLista> DTListasD = new ArrayList<>();
+
+        for (ListaReproduccion lr : lRP) {
+            if (lr instanceof ListaPorDefecto) {
+                DataLista dtLista = new DataLista((ListaPorDefecto) lr);
+                DTListasD.add(dtLista);
+                
+            } else if (lr instanceof ListaParticular) {
+                DataLista dtLista = new DataLista((ListaParticular) lr);
+                DTListasP.add(dtLista);
+                
+            }
+        }
+        if(tipo.equals("part")){
+            return DTListasP;
+        }else{
+            return DTListasD;
+        }
+    }   
+    
+    
+    public List<DataAlbum> getDataAlbumsAjax(String s) {
+        List<Album> lAlbum = cpu.getAlbumsAjax(s);
+        List<DataAlbum> DTAlbums = new ArrayList<>();
+
+        for (Album album : lAlbum) {
+            DataAlbum dtAlbum = album.getDataAlbum();
+            DTAlbums.add(dtAlbum);
+        }
+        return DTAlbums;
+    }
+    
+    
+    public List<DataUsuario> getDataUsuariosAjax(String s, String tipo) {
+        List<Usuario> lUsr = cpu.getUsuariosAjax(s);
+        List<DataUsuario> DTCli = new ArrayList<>();
+        List<DataUsuario> DTArt = new ArrayList<>();
+
+        for (Usuario usuario : lUsr) {
+            if (usuario instanceof Artista) {
+                Artista artista = (Artista) usuario;
+                DataUsuario dtArt = new DataUsuario(
+                    artista.getNickname(),
+                    artista.getNombre(),
+                    artista.getApellido(),
+                    artista.getEmail(),
+                    artista.getFechaNac(),
+                    artista.getImagenPerfil()
+                );
+                DTArt.add(dtArt);
+
+            } else if (usuario instanceof Cliente) {
+                Cliente cliente = (Cliente) usuario;
+                DataUsuario dtCli = new DataUsuario(
+                    cliente.getNickname(),
+                    cliente.getNombre(),
+                    cliente.getApellido(),
+                    cliente.getEmail(),
+                    cliente.getFechaNac(),
+                    cliente.getImagenPerfil()
+                );
+                DTCli.add(dtCli);
+
+            }
+        }
+        if(tipo.equals("art")){
+            return DTArt;
+        }else{
+            return DTCli;
+        }
+
+    }
+       
+       
+//    public void pruebaDatos(String s) {
+//    // Obtener las listas utilizando las funciones que ya creaste
+//
+//    // Obtener los temas
+//    List<DataTema> DTTemas = getDataTemasAjax(s);
+//
+//    // Obtener las listas de reproducción (particulares y por defecto)
+//    List<DataLista> DTListasP = getDataListasReproduccionAjax(s, "part");
+//    List<DataLista> DTListasD = getDataListasReproduccionAjax(s, "def");
+//
+//    // Obtener los usuarios (artistas y clientes)
+//    List<DataUsuario> DTArtista = getDataUsuariosAjax(s, "art");
+//    List<DataUsuario> DTCliente = getDataUsuariosAjax(s, "cli");
+//
+//    // Obtener los álbumes
+//    List<DataAlbum> DTAlbums = getDataAlbumsAjax(s);
+//    
+//    // Imprimir los nombres para ver el resultado
+//    for (DataTema dtTema : DTTemas) {
+//        System.out.println("Tema: " + dtTema.getNombre());
+//    }
+//
+//    for (DataLista dtListaP : DTListasP) {
+//        System.out.println("Lista de Reproducción P: " + dtListaP.getNombre());
+//    }
+//
+//    for (DataLista dtListaD : DTListasD) {
+//        System.out.println("Lista de Reproducción D: " + dtListaD.getNombre());
+//    }
+//
+//    for (DataUsuario dtArtista : DTArtista) {
+//        System.out.println("Artista: " + dtArtista.getNick());
+//    }
+//
+//    for (DataUsuario dtCliente : DTCliente) {
+//        System.out.println("Cliente: " + dtCliente.getNick());
+//    }
+//
+//    for (DataAlbum dtAlbum : DTAlbums) {
+//        System.out.println("Álbum: " + dtAlbum.getNombre());
+//    }
+//}
+          
    public void cargarDatos() throws GeneroRepetidoException, UsuarioRepetidoException{
        
     // Artistas

@@ -25,8 +25,7 @@ public class Principal extends javax.swing.JFrame {
         //cpu = new Fabrica().getControladorPersistencia();
         initComponents();
         this.setTitle("Espotify");
-        this.setSize(900, 800);
-        
+        this.setSize(900, 800);        
     }
     
     @SuppressWarnings("unchecked")
@@ -336,6 +335,7 @@ public class Principal extends javax.swing.JFrame {
         }
         try {
             sys.cargarDatos();
+            
             datosCargados = true;
             System.out.println("Datos de prueba cargados correctamente.");
             JOptionPane.showMessageDialog(this, "Datos de prueba cargados correctamente.");

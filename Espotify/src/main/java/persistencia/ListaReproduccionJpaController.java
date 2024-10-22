@@ -172,6 +172,17 @@ public class ListaReproduccionJpaController implements Serializable {
             em.close();
         }
     }
+        
+        public List<ListaReproduccion> findAllListasAjax(String s) {
+        EntityManager em = getEntityManager();
+            try {
+                Query query = em.createQuery("SELECT lr FROM ListaReproduccion lr WHERE lr.nombre LIKE :nombre", ListaReproduccion.class);
+                query.setParameter("nombre", s + "%");
+                return query.getResultList();
+            } finally {
+                em.close();
+            }
+        }
     
 public Set<Tema> findTemasByListaReproduccionId(int idLista) {
     EntityManager em = getEntityManager();

@@ -8,6 +8,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/boostrap/css/bootstrap.min.css">
     <script src="${pageContext.request.contextPath}/boostrap/js/jquery-3.7.1.min.js"></script>
     <title>Alta Album</title>
@@ -106,7 +108,7 @@
             padre = sys.getPadre(nombreGenero);
             if(padre.equals("Genero")){
             %>
-            <li><%=nombreGenero%></li><%
+            <li class="generoP"><%=nombreGenero%></li><%
                         } else {
                 %>
                         <li>
@@ -148,6 +150,7 @@
 
     let generos = [];
     let temas = [];
+
 
     
     const form = document.getElementById('mainForm');
@@ -312,12 +315,30 @@
             });
             
             
-//        let generos = document.getElementsByClassName('toggle-tree');
-//                for let (genero : generos){
-//                    genero.addEventListener('click', function() {
-//                    document.getElementById('nombreG').value = this.value;  
-//                )}
-//            }
+        let generosPrincipales = document.getElementsByClassName('generoP');
+        let generosToggle = document.getElementsByClassName('toggle-tree');
+
+        let selectedGenre = ""; // Variable para almacenar el género seleccionado
+
+        // Manejo de los géneros principales
+        for (let genero of generosPrincipales) {
+            genero.addEventListener('click', function() {
+                selectedGenre = genero.textContent; 
+                document.getElementById('nombreG').value = selectedGenre;  
+                console.log("Género seleccionado: " + selectedGenre); 
+            });
+        }
+
+        // Manejo de los subgéneros (toggle-tree)
+        for (let genero of generosToggle) {
+            genero.addEventListener('click', function() {
+                selectedGenre = genero.textContent; 
+                document.getElementById('nombreG').value = selectedGenre;
+
+            });
+        }   
+            
+        
 
         // Verificación de campos y duplicados con AJAX
         $(document).ready(function() {
@@ -371,7 +392,7 @@
             $('#nombreA').on('input', function() {
                 clearTimeout(albumTimer);
                 albumTimer = setTimeout(() => checkField('#nombreA', '#albumError', 'checkAlbumName'), doneTypingInterval);
-            });-
+            });
 
             // Verificar género duplicado
             $('#nombreG').on('input', function() {

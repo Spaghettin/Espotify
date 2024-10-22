@@ -36,7 +36,11 @@ import logica.Tema;
 
 public interface iSistema {
     public abstract void cargarDatos() throws GeneroRepetidoException, UsuarioRepetidoException;
-    
+//    public abstract void pruebaDatos(String s);
+    public abstract List<DataTema> getDataTemasAjax(String s);
+    public abstract List<DataLista> getDataListasReproduccionAjax(String s, String tipo);
+    public abstract List<DataAlbum> getDataAlbumsAjax(String s);
+    public abstract List<DataUsuario> getDataUsuariosAjax(String s, String tipo);
     //Alta Usuarios - Consulta Usuarios  - Preferencias - agustin
     public abstract void altaPerfil(String nickname, String nombre, String apellido, String password, String email, LocalDate fechaNac, String imagen, String sitioWeb, String biografia, String tipo) throws UsuarioRepetidoException;
     public abstract DataUsuario[] getDataUsuarios() throws UsuarioNoExisteException;

@@ -234,6 +234,17 @@ public class AlbumJpaController implements Serializable {
         }
     }
     
+    public List<Album> findAllAlbumesAjax(String s) {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createQuery("SELECT c FROM Album c WHERE c.nombre LIKE :nombre", Album.class);
+            query.setParameter("nombre", s + "%");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
     //Consulta Album
     public List<Album> obtenerNombresAlbumesPorArtista(String artistaNickname) {
         EntityManager em = getEntityManager();

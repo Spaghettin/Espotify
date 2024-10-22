@@ -6,5 +6,6 @@ servlets\SvLogin.class
 servlets\SvVerificarNickUsuario.class
 servlets\SvAgregarTemaAlbum.class
 servlets\SvGetAlbumBy.class
+servlets\SvSearchBar.class
 rutaP\rutaProyecto.class
 servlets\SvAgregarGeneroAlbum.class

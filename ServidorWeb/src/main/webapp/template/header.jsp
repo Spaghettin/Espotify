@@ -1,10 +1,9 @@
-<%-- 
-    Document   : menu
-    Created on : 4 oct. 2024, 12:53:28
-    Author     : dokgo
---%>
 
-<%@page import="datatypes.DataUsuario"%>
+<%@page import= "java.util.List"%>
+<%@page import= "datatypes.DataTema"%>
+<%@page import= "datatypes.DataUsuario"%>
+<%@page import= "datatypes.DataAlbum"%>
+<%@page import= "datatypes.DataLista"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <header>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/boostrap/css/bootstrap.min.css">
@@ -41,7 +40,7 @@
                     <% } %>
                 </ul>
                 <form class="d-flex custom-search" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Tema, Album o Lista" aria-label="Buscar">
+                    <input id="searchBar" class="form-control me-2" type="search" placeholder="Tema, Album, Lista o Usuario" aria-label="Buscar">
                     <button class="btn btn-outline-success" type="submit">Buscar</button>
                 </form>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
@@ -55,7 +54,7 @@
                     <% } %>
                     <% if (isCliente) { %>
                         <li class="nav-item">
-                            <a class="btn btn-outline-success" href="${pageContext.request.contextPath}/suscripcion.jsp">Suscripción</a>
+                            <a class="btn btn-outline-success" href="${pageContext.request.contextPath}/contratoSub.jsp">Suscripción</a>
                         </li>
                     <% } %>
                     <li class="nav-item dropdown">
@@ -83,7 +82,51 @@
         </div>
     </nav>
 <script>
+let temasAjax = [];
+let listasPAjax = [];
+let listasDAjax = [];
+let artistasAjax = [];
+let clientesAjax = [];
+let albumsAjax = [];
 
+// Verificación de campos y duplicados con AJAX
+$(document).ready(function() {
+    let searchTimer;
+    const doneTypingInterval = 10;
+    const checkType = "checkSearch"; // Asegúrate de que checkType esté definido
+
+    function checkField(field) {
+        let value = $(field).val();
+        if (value.length > 0) {
+            $.ajax({
+                url: "SvSearchBar",
+                method: 'POST',
+                data: { action: checkType, value: value },
+                success: function(response) {
+
+                    temasAjax = response.temas;
+                    listasPAjax = response.listasParticulares;
+                    listasDAjax = response.listasPorDefecto;
+                    artistasAjax = response.artistas;
+                    clientesAjax = response.clientes;
+                    albumsAjax = response.albums;
+                    displaySearchBar();
+                },
+                error: function() {
+                    alert("Error al mostrar");
+                }
+            });
+        }else{
+            albumGrid.innerHTML = '';
+        }
+    }
+
+    // Verificar el nombre del álbum
+    $('#searchBar').on('input', function() {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => checkField('#searchBar'), doneTypingInterval);
+    });
+}); 
 </script>
 </header>
 <style>

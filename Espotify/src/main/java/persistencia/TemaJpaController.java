@@ -127,6 +127,17 @@ public class TemaJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public List<Tema> findAllTemasAjax(String s) {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createQuery("SELECT t FROM Tema t WHERE t.nombre LIKE :nombre", Tema.class);
+            query.setParameter("nombre", s + "%");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 
     // Contar el número de temas
     public int getTemaCount() {

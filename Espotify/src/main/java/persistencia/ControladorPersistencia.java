@@ -408,6 +408,20 @@ public void crearAlbum(Album album) {
         return listaController.findListaReproduccionByName(nombreL);
     }
     
+    public List<ListaReproduccion> getListasAjax(String s){
+        return listaController.findAllListasAjax(s);
+    }
     
+    public List<Tema> getTemasAjax(String s){
+        return temaController.findAllTemasAjax(s);
+    }
+    
+    public List<Album> getAlbumsAjax(String s){
+        return albumController.findAllAlbumesAjax(s);
+    }
+    
+    public List<Usuario> getUsuariosAjax(String s){
+        return usuarioController.findAllUsuariosAjax(s);
+    }
    
 }

@@ -19,6 +19,8 @@ public class DataLista {
     private String nombre,imagen,extra;
     private Set<DataTema> temas;
     private Set<String> temass;
+    private String cliente;
+    private boolean publica;
 
     public DataLista(ListaPorDefecto ld) {
         this.id=ld.getId();
@@ -29,7 +31,6 @@ public class DataLista {
         for(Tema t: ld.getListaTemas()){
             temas.add(new DataTema(t));
         }
-        
     }
     
     public DataLista(ListaParticular ld){
@@ -41,6 +42,8 @@ public class DataLista {
         for(Tema t: ld.getListaTemas()){
             temas.add(new DataTema(t));
         }
+        this.cliente = ld.getCliente();
+        this.publica = ld.esPublica();
     }
     
     public DataLista(String nom, String ima, String extra){

@@ -170,6 +170,17 @@ public class UsuarioJpaController implements Serializable {
         }
     }
     
+    public List<Usuario> findAllUsuariosAjax(String s) {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.nickname LIKE :nickname", Usuario.class);
+            query.setParameter("nickname", s + "%");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
     public List<Usuario> findUsuarioByTipoCliente() {
         EntityManager em = emf.createEntityManager();
         List<Usuario> clientes= new ArrayList();
